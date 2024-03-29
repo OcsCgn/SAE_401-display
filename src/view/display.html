@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Visualisation</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">SAE 401</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/display">Visualisation</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/display">Édition</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/import">Importation</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/export">Exportation</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/disconnect">Déconnexion</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container mt-4">
+		<h2>Filtres et Tableau</h2>
+		<div class="form-group">
+			<label for="trieSelect">Trier par :</label>
+			<select class="form-control" id="trieSelect">
+				<option>Alphabétique</option>
+				<option>Nom</option>
+				<option>Prénom</option>
+				<option>Rang croissant</option>
+				<option>Rang décroissant</option>
+				<option>Compétences</option>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<label for="columnSelect">Colonnes :</label>
+			<div class="dropdown">
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Sélectionner les colonnes
+				</button>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="etudiant_nip_checkbox"
+							value="etudiant_nip">
+						<label class="custom-control-label" for="etudiant_nip_checkbox">Étudiant NIP</label>
+					</div>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="civ_checkbox" value="civ">
+						<label class="custom-control-label" for="civ_checkbox">Civ</label>
+					</div>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="nom_checkbox" value="nom">
+						<label class="custom-control-label" for="nom_checkbox">Nom</label>
+					</div>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="prenom_checkbox" value="prenom">
+						<label class="custom-control-label" for="prenom_checkbox">Prénom</label>
+					</div>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="cursus_checkbox" value="cursus">
+						<label class="custom-control-label" for="cursus_checkbox">Cursus</label>
+					</div>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="semestre_checkbox" value="semestre">
+						<label class="custom-control-label" for="semestre_checkbox">Semestre</label>
+					</div>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="admission_checkbox" value="admission">
+						<label class="custom-control-label" for="admission_checkbox">Admission</label>
+					</div>
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="admission_checkbox" value="admission">
+						<label class="custom-control-label" for="rang_checkbox">Rang</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="table-responsive">
+			<table class="table" id="dataTable">
+				<thead>
+					<tr>
+						<th id="etudiant_nip">Étudiant NIP</th>
+						<th id="civ">Civ</th>
+						<th id="nom">Nom</th>
+						<th id="prenom">Prénom</th>
+						<th id="cursus">Cursus</th>
+						<th id="semestre">Semestre</th>
+						<th id="admission">Admission</th>
+						<th id="rang">Rang</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			$('#trieSelect').change(function () {
+				var selectedOption = $(this).children("option:selected").val();
+
+				$.ajax({
+					url: 'displayAjax',
+					type: 'POST',
+					data: { selectedOption: selectedOption },
+					success: function (response) {
+						console.log(response);
+					},
+					error: function (xhr, status, error) {
+						console.error(xhr.responseText);
+					}
+				});
+			});
+
+			var xhr = new XMLHttpRequest();
+
+			xhr.open('GET', 'displayAjax', true);
+
+			xhr.onload = function () {
+				if (xhr.status === 200) {
+					var tab = xhr.responseText;
+					console.log(tab);
+				} else {
+					console.error('La requête a échoué : ' + xhr.status);
+				}
+			};
+
+			xhr.send();
+
+			$('#dropdownMenuButton + .dropdown-menu input[type="checkbox"]').change(function () {
+				var checkedColumns = [];
+				$('#dropdownMenuButton + .dropdown-menu input[type="checkbox"]:checked').each(function () {
+					checkedColumns.push($(this).val());
+				});
+				$('#dataTable th').hide();
+				$.each(checkedColumns, function (index, column) {
+					$('#' + column).show();
+				});
+			});
+		});
+	</script>
+
+</body>
+
+</html>

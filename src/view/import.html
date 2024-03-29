@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lire un fichier Excel</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">SAE 401</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/display">Visualisation</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/display">Édition</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/import">Importation</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/export">Exportation</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/disconnect">Déconnexion</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container mt-5">
+		<h2 class="mb-4">Importer et Lire un Fichier Excel (.xlsx)</h2>
+		<form action="/importXlsx" method="post" enctype="multipart/form-data">
+			<div class="form-group">
+				<label for="excelFile">Sélectionnez un fichier Excel (.xlsx)</label>
+				<input type="file" class="form-control-file" id="excelFile" name="excelFile">
+			</div>
+			<button type="submit" class="btn btn-primary" name="import">Importer</button>
+		</form>
+	</div>
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
